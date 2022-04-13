@@ -1,0 +1,121 @@
+{% extends 'private/_base.html' %}
+
+{%block title%}Job {{ job.id }}{% endblock %}
+
+{% block header %}{{ job.title }}{% endblock %}
+
+{% block job %}
+
+{% if user.type == 'Drone Pro'%}
+<h4 class="h4">{{ job.type }}</h4>
+<h6 class="h6">{{ job.sub_type }}</h6><br>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3">
+  {% set w = 75 %}
+  <div class="col-sm">
+    <p>
+      <label class="h6 m-1">Description</label><br>
+      <label class="border rounded p-2 m-top-1 w-{{ w }}">{{ job.description }}</label>
+    </p>
+
+    <p>
+      {% if job.project_price %}
+        <label class="h6 m-1">Target Project Price</label><br>
+        <label class="border rounded p-2 m-top-1 w-{{ w }}">{{ f_price(job.project_price) }}</label>
+      {% else %}
+        <label class="h6 m-1">Target Hourly Price</label><br>
+        <label class="border rounded p-2 m-top-1 w-{{ w }}">{{ f_price(job.hourly_price) }}</label>
+      {% endif %}
+    </p>
+    <p>
+      <label class="h6 m-1">Target Date</label><br>
+      <label class="border rounded p-2 m-top-1 w-{{ w }}">{{ f_date(job.date_target) }}</label>
+    </p>
+    <p>
+      <label class="h6 m-1">Target Time</label><br>
+      <label class="border rounded p-2 m-top-1 w-{{ w }}">{{ job.time }}</label>
+    </p>
+  </div>
+  <div class="col-sm">
+    <p>
+      <label class="h6 m-1">State</label><br>
+      <label class="border rounded p-2 m-top-1 w-{{ w }}">{{ job.state }}</label>
+    </p>
+    <p>
+      <label class="h6 m-1">Metro Area</label><br>
+      <label class="border rounded p-2 m-top-1 w-{{ w }}">{{ job.metro }}</label>
+    </p>
+
+  {% if job.address %}
+    <p>
+      <label class="h6 m-1">Address</label><br>
+      <label class="border rounded p-2 m-top-1 w-{{ w }}">
+        {{ job.address.street }}<br>
+        {% if job.address.apt %}
+          {{ job.address.apt }}<br>
+        {% endif %}
+        {{ job.address.city }}, {{ job.address.state }} {{ job.address.zip_code }}<br>
+      </label>
+    </p>
+  {% endif %}
+  <p>
+    <label class="h6 m-1">Client</label><br>
+    <label class="border rounded p-2 m-top-1 w-{{ w }}">
+      {{ client.f_name }} {{ client.l_name }}<br>
+      {% if client.company %}
+        {{ client.company }}<br>
+      {% endif %}
+    </label>
+  </p>
+  </div>
+</div>
+
+{% if job.status == 'posted' %}
+<p>
+  <small class="small p-2 m-top-1">{{ f_job_proposal_rng(job.proposals | length) }}</small><br>
+  <small class="small p-2 m-top-1">{{ f_time_since(job.date_created) }}</small><br>
+</p>
+<br><br>
+<div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-1">
+  <div class="col-sm" id="proposal_div"></div>
+  {% if proposal %}
+    <form id="proposal_update_form" action="{{ url_for('update_proposal') }}" method="post">
+      <input name="username" style="display: none" value="{{ user.username }}">
+      <input name="job_id" style="display: none" value="{{ job.id }}">
+      <input name="proposal_id" style="display: none" value="{{ proposal.id }}">
+
+    </form>
+      {% set p_attrs = proposal.get_proposal_attrs() %}
+      <small class="small p-2 m-top-1">Proposal {{ f_time_since(proposal.date_updated, 'updated') }}</small><br>
+      <input type="button" class=" btn btn-info btn-sm m-2 w-25" value="view proposal"
+             onclick="proOnClickViewProposal(this, {{ proposal.get_proposal_attrs() }})" />
+  {% else %}
+    <form id="proposal_submit_form" action="{{ url_for('submit_proposal') }}" method="post">
+      <input name="pro_id" style="display: none" value="{{ user.id }}">
+      <input name="job_id" style="display: none" value="{{ job.id }}">
+    </form>
+    <input type="button" class=" btn btn-info btn-sm m-2 w-25" value="create proposal"
+           onclick="proOnClickCreateProposal(this, {{ user.id }}, {{ job.get_proposal_attrs() }})" />
+  {% endif %}
+
+</div>
+
+{% else %}
+
+{% endif %}
+
+
+
+
+
+
+
+{% else %}
+
+
+
+
+{% endif %}
+
+
+{% endblock %}

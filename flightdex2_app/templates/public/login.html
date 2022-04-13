@@ -1,0 +1,28 @@
+{% extends 'public/_base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block head_logo %}
+    <img src="{{ url_for('static', filename='img/logo3_white.png') }}" width="226" height="120">
+{% endblock %}
+
+
+
+{% block info %}FlightDex Login{% endblock %}
+
+{% block login %}
+<form action="/login" method="post">
+    <p><input type="text" name="username_email" placeholder="Username or Email" value="{{ username }}" style="width: 400px" /></p>
+    <p><input type="password" name="password" id="password" placeholder="Password" style="width: 400px" /></p>
+    <p><small style="margin-right: 25px">Forgot Username</small><small style="margin-left: 25px">Forgot Password</small></p>
+    <p><input type="submit" class="btn btn-light" value="login" /></p>
+</form>
+{% endblock %}
+
+{% block message_flash %}
+    {% if flash %}
+        <p style="color: rgba(84, 216, 226, .95);">{{ flash }}</p>
+    {% else %}
+        <p>&emsp;</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>{% block title %}{% endblock %}</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+    
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.1.0/uuidv4.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+  </head>
+
+  <body>
+    <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+      <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="{{ url_for('index') }}">
+        <img src="{{ url_for('static', filename='img/logo3_white.png') }}" width="75" height="40">
+        &emsp;FlightDex</a>
+      {% if user.type == 'Drone Pro' %}
+        <a class="nav-link" href="#" style="color: rgba(255, 255, 255, .95); text-shadow: 1.5px 1.5px black;">Search Jobs</a>
+        <a class="nav-link" href="#" style="color: rgba(255, 255, 255, .95); text-shadow: 1.5px 1.5px black;">View Proposals</a>
+      {% else %}
+        <a class="nav-link" href="#" style="color: rgba(255, 255, 255, .95); text-shadow: 1.5px 1.5px black;">Post Job</a>
+      {% endif %}
+      <div class="navbar-nav">
+        <div class="nav-item text-nowrap">
+          <a class="nav-link px-3" href="{{ url_for('logout', username=user.username) }}">Logout</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="container-fluid">
+      <div class="row">
+        <nav id="sidebarMenu" class="col-sm-1 col-md-1 col-lg-1 d-sm-block bg-dark sidebar collapse">
+          <div class="position-sticky pt-3">
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-light">
+              <span>JOBS</span>
+            </h6>
+            <ul class="nav flex-column">
+              {% if user.type == 'Drone Pro' %}
+                <li class="nav-item">
+                  <a class="nav-link text-info" href="{{ url_for('jobs', username=user.username, jobs_status='posted') }}">
+                    <span data-feather="circle"></span>
+                    Interested
+                  </a>
+                </li>
+              {% else %}
+                <li class="nav-item">
+                  <a class="nav-link text-info" href="{{ url_for('jobs', username=user.username, jobs_status='posted') }}">
+                    <span data-feather="circle"></span>
+                    Posted
+                  </a>
+                </li>
+              {% endif %}
+              <li class="nav-item">
+                <a class="nav-link text-info" href="{{ url_for('jobs', username=user.username, jobs_status='scheduled') }}">
+                  <span data-feather="disc"></span>
+                  Scheduled
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-info" href="{{ url_for('jobs', username=user.username, jobs_status='completed') }}">
+                  <span data-feather="check-circle"></span>
+                  Completed
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-info" href="{{ url_for('jobs', username=user.username, jobs_status='cancelled') }}">
+                  <span data-feather="x-circle"></span>
+                  Cancelled
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-info" href="#">
+                  <span data-feather="calendar"></span>
+                  Calendar
+                </a>
+              </li>
+            </ul>
+
+            <br>
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-light">
+              <span>SOCIAL</span>
+            </h6>
+            <ul class="nav flex-column mb-2">
+              <li class="nav-item">
+                <a class="nav-link text-info" href="#">
+                  <span data-feather="users"></span>
+                  Friends
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link text-info" href="#">
+                  <span data-feather="message-circle"></span>
+                  Messages
+                </a>
+              </li>
+            </ul>
+
+            <br>
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-light">
+              <span>USER</span>
+            </h6>
+            <ul class="nav flex-column mb-2">
+              <li class="nav-item">
+                <a class="nav-link text-info" href="#">
+                  <span data-feather="user"></span>
+                  Profile
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link text-info" href="#">
+                  <span data-feather="settings"></span>
+                  Account
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <main class="col-md-11 ms-sm-auto col-lg-11 px-md-4">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h4>{% block header %}{% endblock %}</h4>
+            <div class="btn-toolbar mb-2 mb-md-0">
+              <div class="btn-group me-2">
+                <button type="button" class="btn btn-sm btn-outline-secondary">Submit Edits</button>
+              </div>
+              <div class="btn-group me-2">
+                <button type="button" class="btn btn-sm btn-outline-info">Build Protocol</button>
+              </div>
+            </div>
+          </div>
+
+          {% block jobs %}{% endblock %}
+          {% block job %}{% endblock %}
+          {% block calendar %}{% endblock %}
+          {% block friends %}{% endblock %}
+          {% block profile %}{% endblock %}
+          {% block account %}{% endblock %}
+
+
+        </main>
+      </div>
+    </div>
+
+
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/base_dashboard.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/job.js') }}"></script>
+
+    <script>
+      feather.replace();
+    </script>
+  </body>
+</html>

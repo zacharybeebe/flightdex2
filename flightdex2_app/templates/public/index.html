@@ -1,0 +1,38 @@
+{% extends 'public/_base.html' %}
+
+{% block style %}
+<style>
+    body {
+        background: url(static/img/DJI_0345_bg.jpg) no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+</style>
+{% endblock %}
+
+{% block title %}FlightDex{% endblock %}
+
+{% block head_logo %}
+    <img src="{{ url_for('static', filename='img/logo3_white.png') }}" width="226" height="120">
+{% endblock %}
+
+
+
+{% block header1 %}The Network for the Drone Industry.{% endblock %}
+
+{% block info %}FlightDex was built to not only provide drone services, but to connect all drone professionals and their clients.{% endblock %}
+
+{% block learn_more %}
+    <br><br><br>
+    <p>
+        <a href="{{ url_for('info') }}" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Learn more</a>
+    </p>
+    <p>
+        <a href="{{ url_for('login') }}" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Login</a>
+    </p>
+    <p>
+        <a href="{{ url_for('create_account') }}" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Create Account</a>
+    </p>
+{% endblock %}

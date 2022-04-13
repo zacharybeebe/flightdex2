@@ -1,0 +1,55 @@
+{% extends 'public/_base.html' %}
+
+{% block title %}Create Account{% endblock %}
+
+{% block head_logo %}
+    <img src="{{ url_for('static', filename='img/logo3_white.png') }}" width="226" height="120">
+{% endblock %}
+
+
+{% block info %}Create Account{% endblock %}
+
+
+{% block create_account %}
+<form id="create_account_form" action="#" method="post">
+    <p><input data-find="ca" data-error="true" type="text" class="form-input" name="f_name" placeholder="First Name" style="width: 400px" onchange="onChangeOthersRequired(this)" /></p>
+    <p><input data-find="ca" data-error="true" type="text" class="form-input" name="l_name" placeholder="Last Name" style="width: 400px" onchange="onChangeOthersRequired(this)" /></p>
+    <p><input data-find="ca" data-error="true" type="text" class="form-input"  name="email" placeholder="Email" style="width: 400px" oninput="onInputEmail(this)" onchange="onChangeEmail(this)" /></p>
+    <p><input data-find="ca" data-error="false" type="text" class="form-input"  name="phone" placeholder="Phone" style="width: 400px" oninput="onInputPhone(this)" /></p>
+    <p><input data-find="ca" data-error="false" type="text" class="form-input"  name="company" placeholder="Company" style="width: 400px" /></p>
+    <p><select data-find="ca" data-error="true" class="form-input" name="state" id="state" onchange="onChangeStateSelection(this, {{ metros }})" style="width: 400px">
+      <option value="">State</option>
+      {% for state in us_states %}
+        <option value="{{ state }}">{{ state }}</option>
+      {% endfor %}
+    </select></p>
+    <p><select data-find="ca" data-error="true" name="metro" id="metro" style="width: 400px" onchange="onChangeOthersRequired(this)">
+        <option value="">Metro Area</option>
+    </select></p>
+    <p><input data-find="ca" data-error="true" type="text" name="username" placeholder="Username" style="width: 400px" onchange="onChangeUsername(this)" /></p>
+    <p><input data-find="ca" data-error="true" type="password" name="password" id="password" placeholder="Password" style="width: 400px" oninput="onInputPassword(this)" /></p>
+    <p><input data-find="ca" data-error="true" type="password" name="password_confirm" id="password_confirm" placeholder="Confirm Password" style="width: 400px" oninput="onInputPasswordConfirm(this)" /></p>
+
+    <p style="display: block">
+        <div style="margin: 15px; display: inline">
+            <input data-find="ca" data-error="true" class="form-check-input" type="checkbox" value="Drone Pro" id="d_pro" name="type" onclick="onClickUserType(this)">
+            <label class="form-check-label" for="d_pro">
+                Drone Pro
+            </label>
+        </div>
+        <div style="margin: 15px; display: inline">
+            <input data-find="ca" data-error="true" class="form-check-input" type="checkbox" value="Drone Client" id="d_client" name="type" onclick="onClickUserType(this)">
+            <label class="form-check-label" for="d_client">
+                Drone Client
+            </label>
+        </div>
+    </p>
+    <br>
+
+    {% if flash %}
+        <p style="color: rgba(84, 216, 226, .95);">{{ flash }}</p>
+    {% endif %}
+    <p><input type="button" class="btn btn-light" value="create account" onclick="onClickCreateAccount()" /></p>
+    <br><br>
+</form>
+{% endblock %}

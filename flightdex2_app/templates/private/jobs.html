@@ -1,0 +1,57 @@
+{% extends 'private/_base.html' %}
+
+{%block title%}{{ jobs_status.capitalize() }} Jobs{% endblock %}
+
+{% block header %}{{ jobs_status.capitalize() }} Jobs{% endblock %}
+
+{% block jobs %}
+{% if jobs_status == 'completed' %}
+  {% set prefix = 'Completed' %}
+{% else %}
+  {% set prefix = 'Target' %}
+{% endif %}
+
+{% if not jobs %}
+<p class="card-text h5">No {{ jobs_status.capitalize() }} Jobs</p>
+
+{% else %}
+<div class="album py-5 bg-light">
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+    {% for job in jobs %}
+      <div class="col" style="cursor: pointer" onclick="window.location='{{ url_for('job', username=user.username, job_id=job.id) }}'">
+        {% if proposal_job_ids %}
+          {% if job.id in proposal_job_ids %}
+            {% set bg = 'info' %}
+          {% else %}
+            {% set bg = 'light' %}
+          {% endif %}
+        {% else %}
+          {% set bg = 'light' %}
+        {% endif %}
+        <div class="card shadow-lg bg-{{ bg }}">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <p class="card-text h5">{{ job.type }}</p>
+              <p class="card-text h6">{{ job.sub_type }}</p>
+            </div>
+            <p class="card-text"><h6 class="h6">{{ job.title }}</h6></p>
+            <label><b>{{ job.state }}</b> - {{ job.metro }}</label><br><br>
+
+            <div class="d-flex justify-content-between align-items-center">
+              {% if job.project_price %}
+                <small class="text-muted">Project Price: {{ f_price(job.project_price) }}</small>
+              {% else %}
+                <small class="text-muted">Hourly Price: {{ f_price(job.hourly_price) }}</small>
+              {% endif %}
+              <small class="text-muted">{{ prefix }} Date: {{ f_date(job.date_target) }}</small>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'public/_base.html' %}
+
+{% block style %}
+<style>
+    body {
+        background: url(static/img/DJI_0407_bg.jpg) no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+</style>
+{% endblock %}
+
+{% block title %}About{% endblock %}
+
+
+{% block head_logo %}
+    <img src="{{ url_for('static', filename='img/logo3_white.png') }}" width="226" height="120">
+{% endblock %}
+
+
+
+
+{% block header1 %}NEW FOR ABOUT.{% endblock %}
+
+{% block info %}NEW FOR ABOUT NEW FOR ABOUT.{% endblock %}

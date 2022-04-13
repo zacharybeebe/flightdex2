@@ -1,0 +1,13 @@
+{% extends 'public/_base.html' %}
+
+{% block title %}{{ username }} Profile{% endblock %}
+
+{% block head_logo %}
+    <img src="{{ url_for('static', filename='images/logo3_white.png') }}" width="226" height="120">
+{% endblock %}
+
+
+
+
+
+{% block info %}{{ username }}Profile{% endblock %}
